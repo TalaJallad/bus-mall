@@ -1,0 +1,68 @@
+#Products {
+    width: 100%;
+    float:right;
+    /*position: absolute;*/
+ 
+
+   
+}
+
+#Results {
+    width: 25%;
+    border: 2px solid black;
+}
+
+ul {
+    
+    font-weight: bold;
+  
+}
+
+li {
+    display: block;
+    list-style-type: circle;
+    list-style-position: inside;
+    margin-left: 5px;
+    font-weight: lighter;
+    
+
+} 
+
+/*section div {
+    padding: 7px;
+    box-sizing: border-box;
+    float: left;
+    width: 50%;
+  }*/
+
+section div {
+    display: inline-block;
+    width: 25%;
+   
+    
+}
+
+section div img {
+    width: 60%;
+    height: 60%;
+    float: right;
+  
+   
+}
+
+
+
+
+  
+h2 {
+     margin-left: 236px;
+ }
+
+ p {
+     width: 100%;
+     margin-left: 427px;
+ }
+
+ 
+    
+ 
