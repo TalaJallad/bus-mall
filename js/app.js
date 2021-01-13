@@ -1,11 +1,19 @@
 'use strict';
+function restoreResults() {
+    //console.log(arrayOfObjects);
+    if (localStorage.length > 0) {
+        arrayOfObjects = JSON.parse(localStorage.getItem('results'));
+        //return arrayOfObjects
+    }
+    console.log('tala');
+}
+
 
 var arrayOfObjects = [];
 var jpgImages = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon',
     'pen', 'pet-sweep', 'scissors', 'shark', 'water-can', 'wine-glass', 'tauntaun', 'unicorn'];
-// var arrayOfProductsNames = [];
-// var arrayOfClicks = [];
-// var arrayOfShowTimes = [];
+
+restoreResults();
 
 function Products(productName, imgUrl) {
     this.name = productName;
@@ -13,12 +21,9 @@ function Products(productName, imgUrl) {
     this.counter = 0;
     this.showtTimes = 0;
     arrayOfObjects.push(this);
-    // arrayOfProductsNames.push(this.name);
-    // arrayOfClicks.push(this.counter);
-    // arrayOfShowTimes.push(this.showtTimes);
 
 }
-
+///////////////////////////////////////////////////////////////
 //create objects//////////////////////////
 for (var i = 0; i < jpgImages.length; i++) {
     new Products(jpgImages[i], jpgImages[i] + '.jpg');
@@ -28,6 +33,7 @@ new Products('usb', 'usb.gif');
 new Products('sweep', 'sweep.png');
 /////////////////////////////////////////
 
+//////////////////////////////////////////////////
 //link to html///////////////////////////////////////////////
 var productsSection = document.getElementById('productsImages');
 var leftImage = document.getElementById('left-img');
@@ -36,6 +42,7 @@ var rightImage = document.getElementById('right-img');
 var leftImageText = document.getElementById('left-img-name');
 var middleImageText = document.getElementById('mid-img-name');
 var rightImageText = document.getElementById('right-img-name');
+//var chartButton= document.getElementById('showreRults');
 //////////////////////////////////////////////////////////////
 
 //choose 3 random images + display name/////////////////////////
@@ -63,7 +70,7 @@ function randomImg() { // this generates random index
     renderImg(leftChoice, midChoice, rightChoice);
 }
 
-function renderImg(leftChoice, midChoice, rightChoice) { //this to get the imge with the random index
+function renderImg(leftChoice, midChoice, rightChoice) { //this is to get the imge with the random index
     leftImage.setAttribute('src', arrayOfObjects[leftChoice].url);
     middleImage.setAttribute('src', arrayOfObjects[midChoice].url);
     rightImage.setAttribute('src', arrayOfObjects[rightChoice].url);
@@ -76,10 +83,17 @@ function renderImg(leftChoice, midChoice, rightChoice) { //this to get the imge 
 
 randomImg();
 /////////////////////////////////////////////////////////
+/////////////restoreItems////////////////////////
 
+
+
+//////////////////////////////////////
 //click count///////////////////////////////////////
 productsImages.addEventListener('click', checkProducts);
-var trials = 25;
+//////////////////////////////////////
+
+var trials = 10;
+
 function objectCounter(objectIndicator) {
     for (var index = 0; index < arrayOfObjects.length; index++) {
         if (arrayOfObjects[index].url === objectIndicator) {
@@ -116,54 +130,47 @@ function checkProducts(event) {
             objectCounter(objectIndicator);
             showTimesCounter();
 
-        }
 
-    } else {
-        productsSection.removeEventListener('click', checkProducts);
+
+
+        }
+    }
+    else {
+        productsImages.removeEventListener('click', checkProducts);
         var showResultsButton = document.createElement('button');
         showResultsButton.innerHTML = "View Results";
-        //showResultsButton.setAttribute('onclick', 'viewResult()');//
         productsSection.appendChild(showResultsButton);
-        showResultsButton.addEventListener("click", function () {
-            viewResult();
-            //console.log(arrayOfShowTimes);
-        });
+        showResultsButton.addEventListener("click", viewResult);
+
+        localStorage.setItem('results', JSON.stringify(arrayOfObjects));
 
 
 
     }
+
+
+
+
+    //console.log("tala");
 }
 
-//////////////////////////////////////////////////////////////////
-//create results list for lab 11 //
-// var resultsList = document.getElementById('Results');
-// function viewResult() {
-//     for (var i = 0; i < arrayOfObjects.length; i++) {
-//         var imageResult = document.createElement('ul');
-//         resultsList.appendChild(imageResult);
-//         imageResult.textContent = arrayOfObjects[i].name + ':'
-//         var counterTotal = document.createElement('li');
-//         imageResult.appendChild(counterTotal);
-//         counterTotal.textContent = 'Clicks = ' + arrayOfObjects[i].counter
-//         var showTotal = document.createElement('li');
-//         imageResult.appendChild(showTotal);
-//         showTotal.textContent = 'Showingtimes = ' + arrayOfObjects[i].showtTimes;
 
-//     }
-// }
-////////////////////////////////////////////////////////////////////
+
 
 ///////create chart///////////////////////////////////////////
 var resultsCanvas = document.getElementById('resultsChart').getContext('2d');
+
+
 function viewResult() {
+
     var arrayOfProductsNames = [];
     var arrayOfClicks = [];
     var arrayOfShowTimes = [];
 
-
     for (var index = 0; index < arrayOfObjects.length; index++) {
         arrayOfProductsNames.push(arrayOfObjects[index].name);
         arrayOfClicks.push(arrayOfObjects[index].counter);
+
         arrayOfShowTimes.push(arrayOfObjects[index].showtTimes);
 
     }
@@ -282,7 +289,33 @@ function viewResult() {
                 }]
             }
         }
-    }); console.log(arrayOfShowTimes);
+    });
+
+    //console.log(arrayOfShowTimes);
 
 }
 ////////////////////////////////////////////////////////////////////
+
+
+
+
+//////////////////////////////////////////////////////////////////
+//create results list for lab 11 //
+// var resultsList = document.getElementById('Results');
+// function viewResult() {
+//     for (var i = 0; i < arrayOfObjects.length; i++) {
+//         var imageResult = document.createElement('ul');
+//         resultsList.appendChild(imageResult);
+//         imageResult.textContent = arrayOfObjects[i].name + ':'
+//         var counterTotal = document.createElement('li');
+//         imageResult.appendChild(counterTotal);
+//         counterTotal.textContent = 'Clicks = ' + arrayOfObjects[i].counter
+//         var showTotal = document.createElement('li');
+//         imageResult.appendChild(showTotal);
+//         showTotal.textContent = 'Showingtimes = ' + arrayOfObjects[i].showtTimes;
+
+//     }
+// }
+////////////////////////////////////////////////////////////////////
+
+
