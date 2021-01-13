@@ -3,9 +3,7 @@
 var arrayOfObjects = [];
 var jpgImages = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon',
     'pen', 'pet-sweep', 'scissors', 'shark', 'water-can', 'wine-glass', 'tauntaun', 'unicorn'];
-// var arrayOfProductsNames = [];
-// var arrayOfClicks = [];
-// var arrayOfShowTimes = [];
+
 
 function Products(productName, imgUrl) {
     this.name = productName;
@@ -13,12 +11,20 @@ function Products(productName, imgUrl) {
     this.counter = 0;
     this.showtTimes = 0;
     arrayOfObjects.push(this);
-    // arrayOfProductsNames.push(this.name);
-    // arrayOfClicks.push(this.counter);
-    // arrayOfShowTimes.push(this.showtTimes);
+    
 
 }
+/////clearstorage////////////////////////////////////////////
+var clearTheStorage = document.getElementById('clearStorage');
 
+function clearStorage(){
+
+    localStorage.clear();
+    arrayOfObjects = [];
+    viewResult();
+}
+clearTheStorage.addEventListener('click', clearStorage);
+///////////////////////////////////////////////////////////////
 //create objects//////////////////////////
 for (var i = 0; i < jpgImages.length; i++) {
     new Products(jpgImages[i], jpgImages[i] + '.jpg');
@@ -28,6 +34,7 @@ new Products('usb', 'usb.gif');
 new Products('sweep', 'sweep.png');
 /////////////////////////////////////////
 
+//////////////////////////////////////////////////
 //link to html///////////////////////////////////////////////
 var productsSection = document.getElementById('productsImages');
 var leftImage = document.getElementById('left-img');
@@ -79,7 +86,7 @@ randomImg();
 
 //click count///////////////////////////////////////
 productsImages.addEventListener('click', checkProducts);
-var trials = 25;
+var trials = 5;
 function objectCounter(objectIndicator) {
     for (var index = 0; index < arrayOfObjects.length; index++) {
         if (arrayOfObjects[index].url === objectIndicator) {
@@ -113,45 +120,26 @@ function checkProducts(event) {
         if (targetId === 'left-img' || targetId === 'mid-img' || targetId === 'right-img') {
             var objectIndicator = event.target.getAttribute('src');
             randomImg();
-            objectCounter(objectIndicator);
-            showTimesCounter();
-
+             showTimesCounter();
         }
-
-    } else {
-        productsSection.removeEventListener('click', checkProducts);
-        var showResultsButton = document.createElement('button');
-        showResultsButton.innerHTML = "View Results";
-        //showResultsButton.setAttribute('onclick', 'viewResult()');//
-        productsSection.appendChild(showResultsButton);
-        showResultsButton.addEventListener("click", function () {
-            viewResult();
-            //console.log(arrayOfShowTimes);
-        });
-
+ 
+        else {
+            productsSection.removeEventListener('click', checkProducts);
+            var showResultsButton = document.createElement('button');
+            showResultsButton.innerHTML = "View Results";
+]            productsSection.appendChild(showResultsButton);
+            showResultsButton.addEventListener("click", function () {
+                viewResult();
+            });
+        }
 
 
     }
-}
 
-//////////////////////////////////////////////////////////////////
-//create results list for lab 11 //
-// var resultsList = document.getElementById('Results');
-// function viewResult() {
-//     for (var i = 0; i < arrayOfObjects.length; i++) {
-//         var imageResult = document.createElement('ul');
-//         resultsList.appendChild(imageResult);
-//         imageResult.textContent = arrayOfObjects[i].name + ':'
-//         var counterTotal = document.createElement('li');
-//         imageResult.appendChild(counterTotal);
-//         counterTotal.textContent = 'Clicks = ' + arrayOfObjects[i].counter
-//         var showTotal = document.createElement('li');
-//         imageResult.appendChild(showTotal);
-//         showTotal.textContent = 'Showingtimes = ' + arrayOfObjects[i].showtTimes;
+};
 
-//     }
-// }
-////////////////////////////////////////////////////////////////////
+
+
 
 ///////create chart///////////////////////////////////////////
 var resultsCanvas = document.getElementById('resultsChart').getContext('2d');
@@ -167,6 +155,8 @@ function viewResult() {
         arrayOfShowTimes.push(arrayOfObjects[index].showtTimes);
 
     }
+
+
 
     var resultsChart = new Chart(resultsCanvas, {
         type: 'bar',
@@ -286,3 +276,31 @@ function viewResult() {
 
 }
 ////////////////////////////////////////////////////////////////////
+
+
+
+
+//////////////////////////////////////////////////////////////////
+//create results list for lab 11 //
+// var resultsList = document.getElementById('Results');
+// function viewResult() {
+//     for (var i = 0; i < arrayOfObjects.length; i++) {
+//         var imageResult = document.createElement('ul');
+//         resultsList.appendChild(imageResult);
+//         imageResult.textContent = arrayOfObjects[i].name + ':'
+//         var counterTotal = document.createElement('li');
+//         imageResult.appendChild(counterTotal);
+//         counterTotal.textContent = 'Clicks = ' + arrayOfObjects[i].counter
+//         var showTotal = document.createElement('li');
+//         imageResult.appendChild(showTotal);
+//         showTotal.textContent = 'Showingtimes = ' + arrayOfObjects[i].showtTimes;
+
+//     }
+// }
+////////////////////////////////////////////////////////////////////
+
+// localStorage.setItem("arrayOfObjects", JSON.stringify(arrayOfObjects));
+
+// var retrieveObjects = JSON.parse(localStorage.getItem('arrayOfObjects'));
+
+// console.log(localStorage);
