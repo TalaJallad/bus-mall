@@ -1,9 +1,19 @@
 'use strict';
+function restoreResults() {
+    //console.log(arrayOfObjects);
+    if (localStorage.length > 0) {
+        arrayOfObjects = JSON.parse(localStorage.getItem('results'));
+        //return arrayOfObjects
+    }
+    console.log('tala');
+}
+
 
 var arrayOfObjects = [];
 var jpgImages = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon',
     'pen', 'pet-sweep', 'scissors', 'shark', 'water-can', 'wine-glass', 'tauntaun', 'unicorn'];
 
+restoreResults();
 
 function Products(productName, imgUrl) {
     this.name = productName;
@@ -11,19 +21,8 @@ function Products(productName, imgUrl) {
     this.counter = 0;
     this.showtTimes = 0;
     arrayOfObjects.push(this);
-    
 
 }
-/////clearstorage////////////////////////////////////////////
-var clearTheStorage = document.getElementById('clearStorage');
-
-function clearStorage(){
-
-    localStorage.clear();
-    arrayOfObjects = [];
-    viewResult();
-}
-clearTheStorage.addEventListener('click', clearStorage);
 ///////////////////////////////////////////////////////////////
 //create objects//////////////////////////
 for (var i = 0; i < jpgImages.length; i++) {
@@ -43,6 +42,7 @@ var rightImage = document.getElementById('right-img');
 var leftImageText = document.getElementById('left-img-name');
 var middleImageText = document.getElementById('mid-img-name');
 var rightImageText = document.getElementById('right-img-name');
+//var chartButton= document.getElementById('showreRults');
 //////////////////////////////////////////////////////////////
 
 //choose 3 random images + display name/////////////////////////
@@ -70,7 +70,7 @@ function randomImg() { // this generates random index
     renderImg(leftChoice, midChoice, rightChoice);
 }
 
-function renderImg(leftChoice, midChoice, rightChoice) { //this to get the imge with the random index
+function renderImg(leftChoice, midChoice, rightChoice) { //this is to get the imge with the random index
     leftImage.setAttribute('src', arrayOfObjects[leftChoice].url);
     middleImage.setAttribute('src', arrayOfObjects[midChoice].url);
     rightImage.setAttribute('src', arrayOfObjects[rightChoice].url);
@@ -83,10 +83,17 @@ function renderImg(leftChoice, midChoice, rightChoice) { //this to get the imge 
 
 randomImg();
 /////////////////////////////////////////////////////////
+/////////////restoreItems////////////////////////
 
+
+
+//////////////////////////////////////
 //click count///////////////////////////////////////
 productsImages.addEventListener('click', checkProducts);
-var trials = 5;
+//////////////////////////////////////
+
+var trials = 10;
+
 function objectCounter(objectIndicator) {
     for (var index = 0; index < arrayOfObjects.length; index++) {
         if (arrayOfObjects[index].url === objectIndicator) {
@@ -120,43 +127,53 @@ function checkProducts(event) {
         if (targetId === 'left-img' || targetId === 'mid-img' || targetId === 'right-img') {
             var objectIndicator = event.target.getAttribute('src');
             randomImg();
-             showTimesCounter();
+            objectCounter(objectIndicator);
+            showTimesCounter();
+
+
+
+
         }
- 
-        else {
-            productsSection.removeEventListener('click', checkProducts);
-            var showResultsButton = document.createElement('button');
-            showResultsButton.innerHTML = "View Results";
-]            productsSection.appendChild(showResultsButton);
-            showResultsButton.addEventListener("click", function () {
-                viewResult();
-            });
-        }
+    }
+    else {
+        productsImages.removeEventListener('click', checkProducts);
+        var showResultsButton = document.createElement('button');
+        showResultsButton.innerHTML = "View Results";
+        productsSection.appendChild(showResultsButton);
+        showResultsButton.addEventListener("click", viewResult);
+
+        localStorage.setItem('results', JSON.stringify(arrayOfObjects));
+
 
 
     }
 
-};
+
+
+
+    //console.log("tala");
+}
 
 
 
 
 ///////create chart///////////////////////////////////////////
 var resultsCanvas = document.getElementById('resultsChart').getContext('2d');
+
+
 function viewResult() {
+
     var arrayOfProductsNames = [];
     var arrayOfClicks = [];
     var arrayOfShowTimes = [];
 
-
     for (var index = 0; index < arrayOfObjects.length; index++) {
         arrayOfProductsNames.push(arrayOfObjects[index].name);
         arrayOfClicks.push(arrayOfObjects[index].counter);
+
         arrayOfShowTimes.push(arrayOfObjects[index].showtTimes);
 
     }
-
-
 
     var resultsChart = new Chart(resultsCanvas, {
         type: 'bar',
@@ -272,7 +289,9 @@ function viewResult() {
                 }]
             }
         }
-    }); console.log(arrayOfShowTimes);
+    });
+
+    //console.log(arrayOfShowTimes);
 
 }
 ////////////////////////////////////////////////////////////////////
@@ -299,8 +318,4 @@ function viewResult() {
 // }
 ////////////////////////////////////////////////////////////////////
 
-// localStorage.setItem("arrayOfObjects", JSON.stringify(arrayOfObjects));
 
-// var retrieveObjects = JSON.parse(localStorage.getItem('arrayOfObjects'));
-
-// console.log(localStorage);
