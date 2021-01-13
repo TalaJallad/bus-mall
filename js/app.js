@@ -92,7 +92,7 @@ randomImg();
 productsImages.addEventListener('click', checkProducts);
 //////////////////////////////////////
 
-var trials = 10;
+var trials = 25;
 
 function objectCounter(objectIndicator) {
     for (var index = 0; index < arrayOfObjects.length; index++) {
