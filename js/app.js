@@ -1,19 +1,21 @@
 'use strict';
+
+
+///////restoreobjects/////////////////////
 function restoreResults() {
     //console.log(arrayOfObjects);
     if (localStorage.length > 0) {
         arrayOfObjects = JSON.parse(localStorage.getItem('results'));
         //return arrayOfObjects
     }
-    console.log('tala');
+    
 }
 
-
+//////////////////////////////////////////////
 var arrayOfObjects = [];
 var jpgImages = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon',
     'pen', 'pet-sweep', 'scissors', 'shark', 'water-can', 'wine-glass', 'tauntaun', 'unicorn'];
 
-restoreResults();
 
 function Products(productName, imgUrl) {
     this.name = productName;
@@ -60,12 +62,12 @@ function randomImg() { // this generates random index
         shownImages.includes(arrayOfObjects[rightChoice])));
 
 
-    shownImages = [];
+        // shownImages = [];
 
-    shownImages.push(
-        arrayOfObjects[leftChoice],
-        arrayOfObjects[midChoice],
-        arrayOfObjects[rightChoice])
+    // shownImages.push(
+    //     arrayOfObjects[leftChoice],
+    //     arrayOfObjects[midChoice],
+    //     arrayOfObjects[rightChoice])
 
     renderImg(leftChoice, midChoice, rightChoice);
 }
@@ -81,7 +83,7 @@ function renderImg(leftChoice, midChoice, rightChoice) { //this is to get the im
 
 }
 
-randomImg();
+
 /////////////////////////////////////////////////////////
 /////////////restoreItems////////////////////////
 
@@ -94,41 +96,61 @@ productsImages.addEventListener('click', checkProducts);
 
 var trials = 25;
 
-function objectCounter(objectIndicator) {
-    for (var index = 0; index < arrayOfObjects.length; index++) {
-        if (arrayOfObjects[index].url === objectIndicator) {
-            arrayOfObjects[index].counter++;
-            trials--;
-            //console.log(arrayOfObjects[index].counter)
-        }
-    }
-}
+//function objectCounter(objectIndicator) {
+    // for (var index = 0; index < arrayOfObjects.length; index++) {
+    //     if (arrayOfObjects[index].url === objectIndicator) {
+    //         arrayOfObjects[index].counter++;
+    //         trials--;
+            
+    //         //console.log(arrayOfObjects[index].counter)
+    //         console.log(arrayOfObjects[index].counter);
+    //         console.log(trials);
+    //     }
+        
+    // }
+//}
 ////////////////////////////////////////////////////////
 
 //check show times://///////////////////////////////////
+shownImages = [];
 function showTimesCounter() {
     for (var i = 0; i < arrayOfObjects.length; i++) {
         if (leftImage.getAttribute('src') === arrayOfObjects[i].url || rightImage.getAttribute('src') === arrayOfObjects[i].url || middleImage.getAttribute('src') === arrayOfObjects[i].url) {
             arrayOfObjects[i].showtTimes++;
-            //console.log(arrayOfObjects[i].showtTimes);
+            shownImages.push(arrayOfObjects[i]);
 
+            
+            
 
         }
     }
 }
-showTimesCounter();
+
 ////////////////////////////////////////////////////////////
 //call back function//////////////////////////////////////////
 function checkProducts(event) {
+    restoreResults();
 
     var targetId = event.target.id;
 
     if (trials !== 0) {
+       
         if (targetId === 'left-img' || targetId === 'mid-img' || targetId === 'right-img') {
             var objectIndicator = event.target.getAttribute('src');
-            randomImg();
-            objectCounter(objectIndicator);
+            for (var index = 0; index < arrayOfObjects.length; index++) {
+                if (arrayOfObjects[index].url === objectIndicator) {
+                    arrayOfObjects[index].counter++;
+                    trials--;
+                    // console.log(arrayOfObjects[index].counter);
+                    console.log(trials);
+                }
+                
+            }
+            // objectCounter(objectIndicator);
             showTimesCounter();
+            randomImg();
+            localStorage.setItem('results', JSON.stringify(arrayOfObjects));
+
 
 
 
@@ -140,9 +162,10 @@ function checkProducts(event) {
         var showResultsButton = document.createElement('button');
         showResultsButton.innerHTML = "View Results";
         productsSection.appendChild(showResultsButton);
+       
         showResultsButton.addEventListener("click", viewResult);
 
-        localStorage.setItem('results', JSON.stringify(arrayOfObjects));
+        
 
 
 
@@ -151,7 +174,7 @@ function checkProducts(event) {
 
 
 
-    //console.log("tala");
+    
 }
 
 
@@ -162,6 +185,8 @@ var resultsCanvas = document.getElementById('resultsChart').getContext('2d');
 
 
 function viewResult() {
+
+    
 
     var arrayOfProductsNames = [];
     var arrayOfClicks = [];
@@ -184,26 +209,26 @@ function viewResult() {
                     label: '# of Product Clicks',
                     data: arrayOfClicks,
                     backgroundColor: [
-                        'rgba((205,92,92,0.2)',
-                        'rgba(240,128,128, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(255,215,0, 0.2)',
-                        'rgba(218,165,32, 0.2)',
-                        'rgba(220,20,60, 0.2)',
-                        'rgba(154,205,50, 0.2)',
-                        'rgba(124,252,0, 0.2)',
-                        'rgba(144,238,144, 0.2)',
-                        'rgba(0,255,127, 0.2)',
-                        'rgba(32,178,170, 0.2)',
-                        'rgba(47,79,790, 0.2)',
-                        'rgba(0,255,255, 0.2)',
-                        'rgba(25,25,112, 0.2)',
-                        'rgba(138,43,226, 0.2)',
-                        'rgba(139,0,139, 0.2)',
-                        'rgba(238,130,238, 0.2)',
-                        'rgba(160,82,45, 0.2)',
-                        'rgba(244,164,96, 0.2)',
-                        'rgba(119,136,153, 0.2)'
+                        'rgba((205,92,92,0.5)',
+                        'rgba(240,128,128, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                        'rgba(255,215,0, 0.5)',
+                        'rgba(218,165,32, 0.5)',
+                        'rgba(220,20,60, 0.5)',
+                        'rgba(154,205,50, 0.5)',
+                        'rgba(124,252,0, 0.5)',
+                        'rgba(144,238,144, 0.5)',
+                        'rgba(0,255,127, 0.5)',
+                        'rgba(32,178,170, 0.5)',
+                        'rgba(47,79,790, 0.5)',
+                        'rgba(0,255,255, 0.5)',
+                        'rgba(25,25,112, 0.5)',
+                        'rgba(138,43,226, 0.5)',
+                        'rgba(139,0,139, 0.5)',
+                        'rgba(238,130,238, 0.5)',
+                        'rgba(160,82,45, 0.5)',
+                        'rgba(244,164,96, 0.5)',
+                        'rgba(119,136,153, 0.5)'
 
                     ],
                     borderColor: [
@@ -234,26 +259,26 @@ function viewResult() {
                     label: '# of Times Shown',
                     data: arrayOfShowTimes,
                     backgroundColor: [
-                        'rgba((205,92,92,0.2)',
-                        'rgba(240,128,128, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(255,215,0, 0.2)',
-                        'rgba(218,165,32, 0.2)',
-                        'rgba(220,20,60, 0.2)',
-                        'rgba(154,205,50, 0.2)',
-                        'rgba(124,252,0, 0.2)',
-                        'rgba(144,238,144, 0.2)',
-                        'rgba(0,255,127, 0.2)',
-                        'rgba(32,178,170, 0.2)',
-                        'rgba(47,79,790, 0.2)',
-                        'rgba(0,255,255, 0.2)',
-                        'rgba(25,25,112, 0.2)',
-                        'rgba(138,43,226, 0.2)',
-                        'rgba(139,0,139, 0.2)',
-                        'rgba(238,130,238, 0.2)',
-                        'rgba(160,82,45, 0.2)',
-                        'rgba(244,164,96, 0.2)',
-                        'rgba(119,136,153, 0.2)'
+                        'rgba((205,92,92,0.5)',
+                        'rgba(240,128,128, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                        'rgba(255,215,0, 0.5)',
+                        'rgba(218,165,32, 0.5)',
+                        'rgba(220,20,60, 0.5)',
+                        'rgba(154,205,50, 0.5)',
+                        'rgba(124,252,0, 0.5)',
+                        'rgba(144,238,144, 0.5)',
+                        'rgba(0,255,127, 0.5)',
+                        'rgba(32,178,170, 0.5)',
+                        'rgba(47,79,790, 0.5)',
+                        'rgba(0,255,255, 0.5)',
+                        'rgba(25,25,112, 0.5)',
+                        'rgba(138,43,226, 0.5)',
+                        'rgba(139,0,139, 0.5)',
+                        'rgba(238,130,238, 0.5)',
+                        'rgba(160,82,45, 0.5)',
+                        'rgba(244,164,96, 0.5)',
+                        'rgba(119,136,153, 0.5)'
                     ],
                     borderColor: [
                         'rgba((205,92,92,1)',
@@ -291,7 +316,7 @@ function viewResult() {
         }
     });
 
-    //console.log(arrayOfShowTimes);
+    
 
 }
 ////////////////////////////////////////////////////////////////////
